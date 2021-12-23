@@ -1,15 +1,26 @@
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import catsReducer from "./catsReducer";
 
 const useCatsDataManager = () => {
 
+  const [id, setId] = useState(0);
+
   const [
     {
-      catsData,
+      catsArray,
     }, dispatch
   ] = useReducer(catsReducer, {
-    catsData: [],
+    catsArray: [],
   });
+
+  const addCatHandler = (catUrl) => {
+    const pushData = () => {
+      catsArray.push({ "id": id, "image": { "url": catUrl } });
+    };
+    dispatch({ type: "addCat", data: catsArray });
+    pushData();
+    setId(id + 1);
+  };
 
   const fetchCats = () => {
     return fetch(`https://api.thecatapi.com/v1/breeds?page=0&limit=6`, {
@@ -46,7 +57,8 @@ const useCatsDataManager = () => {
   }, []);
 
   const retObject = {
-    catsData,
+    catsArray,
+    addCatHandler,
   };
 
   return retObject;

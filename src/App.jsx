@@ -2,18 +2,24 @@ import React, { useContext } from "react";
 import { GlobalProvider, GlobalContext } from "./GlobalState";
 
 import Cat from "./components/Cat";
-
-import "./App.css";
+import AddCat from "./components/AddCat";
+import "./css/App.css";
 
 const App = () => {
 
   const initCatsData = useContext(GlobalContext);
 
+  // console.log(`App - initCatsData => `);
+  // console.log(initCatsData);
+
   return (
     <GlobalProvider value={initCatsData}>
-      <div className="App">
-        <header className="App-header">
+      <div className="App row mb-5 justify-content-center">
+        <header className="App-header w-100 mb-5">
           Reacats
+          <div className="App-header-buttons">
+            <AddCat />
+          </div>
         </header>
         <main>
           <Cat />
@@ -21,6 +27,6 @@ const App = () => {
       </div>
     </GlobalProvider>
   );
-}
+};
 
 export default App;
