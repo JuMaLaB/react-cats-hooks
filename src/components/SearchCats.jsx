@@ -5,7 +5,7 @@ import "../css/SearchCats.css";
 
 const SearchCats = () => {
 
-  console.log(`SearchCats => `);
+  // console.log(`SearchCats => `);
 
   const [isFormDisplayed, setIsFormDisplayed] = useState(false);
 

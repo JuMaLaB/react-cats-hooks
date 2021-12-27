@@ -12,6 +12,7 @@
 
 .CatInput-overlay-displayed {
   display: flex;
+  flex-direction: column;
   z-index: 9;
 }
 
@@ -33,4 +34,9 @@
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+}
+
+.input-error {
+  color: red;
+  font-size: 15px;
 }

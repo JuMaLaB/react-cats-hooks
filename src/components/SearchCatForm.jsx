@@ -3,7 +3,7 @@ import "../css/SearchCatForm.css";
 
 const SearchCatForm = ({ limit }) => {
 
-  console.log(`SearchCatForm => `);
+  // console.log(`SearchCatForm => `);
 
   const [isLoading, setIsloading] = useState(true);
   const [catsImgArray, setCatsImgArray] = useState();
