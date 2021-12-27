@@ -8,6 +8,7 @@ const SearchCatForm = ({ limit }) => {
   const [isLoading, setIsloading] = useState(true);
   const [catsImgArray, setCatsImgArray] = useState();
 
+  // TODO : add api key in config file
   const fetchImages = () => {
     return fetch(`https://api.thecatapi.com/v1/images/search?limit=${limit}`, {
       method: 'GET',

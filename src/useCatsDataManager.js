@@ -13,6 +13,7 @@ const useCatsDataManager = () => {
     catsArray: [],
   });
 
+  // TODO : add api key in config file
   const addCatHandler = (catUrl) => {
     const pushData = () => {
       catsArray.push({ "id": id, "image": { "url": catUrl } });
