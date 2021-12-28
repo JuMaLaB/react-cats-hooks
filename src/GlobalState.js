@@ -8,6 +8,7 @@ export const GlobalProvider = ({ children }) => {
   const {
     catsArray,
     excludedCats,
+    fetchCats,
     addCatHandler,
     findCatById,
   } = useCatsDataManager();
@@ -15,6 +16,7 @@ export const GlobalProvider = ({ children }) => {
   const provider = {
     catsArray,
     excludedCats,
+    fetchCats,
     addCatHandler,
     findCatById,
   };

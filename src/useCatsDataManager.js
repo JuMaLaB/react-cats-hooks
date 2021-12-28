@@ -32,8 +32,8 @@ const useCatsDataManager = () => {
   };
 
   // TODO : add api key in config file
-  const fetchCats = () => {
-    return fetch(`https://api.thecatapi.com/v1/images/search?limit=6`, {
+  const fetchCats = (limit) => {
+    return fetch(`https://api.thecatapi.com/v1/images/search?limit=${limit}`, {
       method: 'GET',
       headers: {
         'x-api-key': '4527d2a2-3e3c-4db8-b7e4-b2712cbb6917'
@@ -72,7 +72,7 @@ const useCatsDataManager = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let catsFetchData = await fetchCats();
+        let catsFetchData = await fetchCats(6);
         dispatch({ type: "setCats", data: catsFetchData });
         updateExcluded(catsFetchData);
       } catch (e) {
@@ -89,6 +89,7 @@ const useCatsDataManager = () => {
   const retObject = {
     catsArray,
     excludedCats,
+    fetchCats,
     addCatHandler,
     findCatById,
   };

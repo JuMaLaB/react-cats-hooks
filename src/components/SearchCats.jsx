@@ -21,7 +21,7 @@ const SearchCats = () => {
       {isFormDisplayed && (
         <div className="SearchCat-overlay" onClick={toggleForm}>
           <div className="SearchCat-content" onClick={(e) => e.stopPropagation()} >
-            <SearchCatForm limit={100} />
+            <SearchCatForm limit={100} toggleForm={toggleForm} />
           </div>
         </div>
       )}
