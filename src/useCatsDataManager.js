@@ -5,21 +5,19 @@ const useCatsDataManager = () => {
 
   const [
     {
+      isLoading,
       catsArray,
       excludedCats,
+      error,
+      hasError,
     }, dispatch
   ] = useReducer(catsReducer, {
+    isLoading: true,
     catsArray: [],
     excludedCats: [],
+    error: null,
+    hasError: false,
   });
-
-  const updateExcluded = (cats) => {
-    cats.map((item) => {
-      if (!excludedCats.includes(item.id)) {
-        excludedCats.push(item.id);
-      }
-    });
-  };
 
   const addCatHandler = (cat) => {
     const pushData = () => {
@@ -40,7 +38,7 @@ const useCatsDataManager = () => {
       }
     }).then((response) => {
       if (!response.ok) {
-        throw Error('ERROR in response !');
+        throw Error('ERROR in response when fetchCats !');
       }
       return response.json();
     },
@@ -59,7 +57,7 @@ const useCatsDataManager = () => {
       }
     }).then((response) => {
       if (!response.ok) {
-        throw Error('ERROR in response !');
+        throw Error('ERROR in response when findCatById !');
       }
       return response.json();
     },
@@ -70,6 +68,13 @@ const useCatsDataManager = () => {
   };
 
   useEffect(() => {
+    const updateExcluded = (cats) => {
+      cats.map((item) => {
+        if (!excludedCats.includes(item.id)) {
+          excludedCats.push(item.id);
+        }
+      });
+    };
     const fetchData = async () => {
       try {
         let catsFetchData = await fetchCats(6);
@@ -84,11 +89,14 @@ const useCatsDataManager = () => {
     return () => {
       console.log('cleanup');
     };
-  }, []);
+  }, [excludedCats]);
 
   const retObject = {
+    isLoading,
     catsArray,
     excludedCats,
+    error,
+    hasError,
     fetchCats,
     addCatHandler,
     findCatById,

@@ -9,7 +9,9 @@ const catsReducer = (state, action) => {
     case "addCat":
       return { ...state, catsArray: action.data };
     case 'setCats':
-      return { ...state, catsArray: action.data };
+      return { ...state, catsArray: action.data, isLoading: false, hasError: false };
+    case 'errorHandler':
+      return { ...state, hasError: true, error: action.error };
     default:
       return state;
   }

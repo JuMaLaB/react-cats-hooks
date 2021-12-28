@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../GlobalState";
+import useCatsDataManager from "../useCatsDataManager";
 import "../css/SearchCatForm.css";
 
 const SearchCatForm = ({ limit, toggleForm }) => {
 
-  const { excludedCats, fetchCats, addCatHandler, findCatById } = useContext(GlobalContext);
+  const { excludedCats, error, hasError, fetchCats, addCatHandler, findCatById } = useContext(GlobalContext);
+  const { dispatch } = useCatsDataManager();
 
   // console.log(`SearchCatForm => `);
 
@@ -33,19 +35,16 @@ const SearchCatForm = ({ limit, toggleForm }) => {
     });
     setSelectedCats([]);
     toggleForm();
-    console.log("addCatsHandler");
-    console.log(selectedCats);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const limit = props.limit;
         let newSearchCatsArray = await fetchCats(limit);
         setIsloading(false);
         setSearchCatsArray(newSearchCatsArray);
       } catch (e) {
-        console.log('Error');
+        dispatch({ type: "errorHandler", error: e });
       }
     };
     fetchData();
@@ -53,7 +52,9 @@ const SearchCatForm = ({ limit, toggleForm }) => {
     return () => {
       console.log('cleanup');
     };
-  }, []);
+  }, [fetchCats, limit, dispatch]);
+
+  if (hasError === true) { return <div>Error: {error.message}</div>; }
 
   return (
     <div className="SearchCatForm">
@@ -84,6 +85,7 @@ const SearchCatForm = ({ limit, toggleForm }) => {
       )}
     </div>
   );
+
 };
 
 export default SearchCatForm;

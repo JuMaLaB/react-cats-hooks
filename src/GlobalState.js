@@ -6,16 +6,22 @@ export const GlobalContext = React.createContext();
 export const GlobalProvider = ({ children }) => {
 
   const {
+    isLoading,
     catsArray,
     excludedCats,
+    error,
+    hasError,
     fetchCats,
     addCatHandler,
     findCatById,
   } = useCatsDataManager();
 
   const provider = {
+    isLoading,
     catsArray,
     excludedCats,
+    error,
+    hasError,
     fetchCats,
     addCatHandler,
     findCatById,

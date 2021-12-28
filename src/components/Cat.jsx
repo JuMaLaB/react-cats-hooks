@@ -3,10 +3,14 @@ import { GlobalContext } from "../GlobalState";
 
 const Cat = () => {
 
-  const { catsArray } = useContext(GlobalContext);
+  const { isLoading, catsArray, error, hasError, } = useContext(GlobalContext);
 
   // console.log(`Cat - catsArray =`);
   // console.log(catsArray);
+
+  if (hasError === true) { return <div>Error: {error.message}</div>; }
+
+  if (isLoading) { return <div>Loading...</div>; }
 
   return (
     <div className="cats-list row px-5">
