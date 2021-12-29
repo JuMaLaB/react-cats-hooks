@@ -5,8 +5,7 @@ const Cat = () => {
 
   const { isLoading, catsArray, error, hasError, } = useContext(GlobalContext);
 
-  // console.log(`Cat - catsArray =`);
-  // console.log(catsArray);
+  // console.log(`Cat => `);
 
   if (hasError === true) { return <div>Error: {error.message}</div>; }
 

@@ -3,11 +3,15 @@ import catsReducer from "./catsReducer";
 
 const useCatsDataManager = () => {
 
+  // console.log(`useCatsDataManager => `);
+
   const [
     {
       isLoading,
       catsArray,
       excludedCats,
+      categories,
+      selectedCategory,
       error,
       hasError,
     }, dispatch
@@ -15,9 +19,13 @@ const useCatsDataManager = () => {
     isLoading: true,
     catsArray: [],
     excludedCats: [],
+    categories: [],
+    selectedCategory: "",
     error: null,
     hasError: false,
   });
+
+  const baseUrl = "https://api.thecatapi.com/v1";
 
   const addCatHandler = (cat) => {
     const pushData = () => {
@@ -29,42 +37,60 @@ const useCatsDataManager = () => {
     return cat.id;
   };
 
-  // TODO : add api key in config file
-  const fetchCats = (limit) => {
-    return fetch(`https://api.thecatapi.com/v1/images/search?limit=${limit}`, {
-      method: 'GET',
-      headers: {
-        'x-api-key': '4527d2a2-3e3c-4db8-b7e4-b2712cbb6917'
-      }
-    }).then((response) => {
-      if (!response.ok) {
-        throw Error('ERROR in response when fetchCats !');
-      }
-      return response.json();
-    },
-      (error) => {
-        console.log(error);
-      }
-    );
+  const updateSelectedCategory = (option) => {
+    const id = option.value ? option.value : option;
+    dispatch({ type: "setSelectedCategory", id: id });
   };
 
-  // TODO : add api key in config file
+  const fetchCategory = async () => {
+    try {
+      let categoriesArray = await fetchCategories();
+      dispatch({ type: "setCategories", data: categoriesArray });
+    } catch (e) {
+      dispatch({ type: "errorHandler", error: e });
+    }
+  };
+
+  const fetchCategories = () => {
+    return fetch(`${baseUrl}/categories`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('ERROR in response when fetchCategories !');
+        }
+        return response.json();
+      },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+
+  const fetchCats = (limit, selectedCategory) => {
+    return fetch(`${baseUrl}/images/search?limit=${limit}&category_ids=${selectedCategory}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('ERROR in response when fetchCats !');
+        }
+        return response.json();
+      },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+
   const findCatById = (catId) => {
-    return fetch(`https://api.thecatapi.com/v1/images/${catId}`, {
-      method: 'GET',
-      headers: {
-        'x-api-key': '4527d2a2-3e3c-4db8-b7e4-b2712cbb6917'
-      }
-    }).then((response) => {
-      if (!response.ok) {
-        throw Error('ERROR in response when findCatById !');
-      }
-      return response.json();
-    },
-      (error) => {
-        console.log(error);
-      }
-    );
+    return fetch(`${baseUrl}/images/${catId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('ERROR in response when findCatById !');
+        }
+        return response.json();
+      },
+        (error) => {
+          console.log(error);
+        }
+      );
   };
 
   useEffect(() => {
@@ -77,7 +103,7 @@ const useCatsDataManager = () => {
     };
     const fetchData = async () => {
       try {
-        let catsFetchData = await fetchCats(6);
+        let catsFetchData = await fetchCats(6, selectedCategory);
         dispatch({ type: "setCats", data: catsFetchData });
         updateExcluded(catsFetchData);
       } catch (e) {
@@ -87,19 +113,23 @@ const useCatsDataManager = () => {
     fetchData();
 
     return () => {
-      console.log('cleanup');
+      console.log('cleanup useCatsDataManager data');
     };
-  }, [excludedCats]);
+  }, []);
 
   const retObject = {
     isLoading,
     catsArray,
     excludedCats,
+    categories,
+    selectedCategory,
     error,
     hasError,
+    fetchCategory,
     fetchCats,
     addCatHandler,
     findCatById,
+    updateSelectedCategory,
   };
 
   return retObject;

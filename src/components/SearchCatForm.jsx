@@ -1,22 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
+import Select from "react-select";
 import { GlobalContext } from "../GlobalState";
-import useCatsDataManager from "../useCatsDataManager";
+
 import "../css/SearchCatForm.css";
 
 const SearchCatForm = ({ limit, toggleForm }) => {
 
-  const { excludedCats, error, hasError, fetchCats, addCatHandler, findCatById } = useContext(GlobalContext);
-  const { dispatch } = useCatsDataManager();
+  const { excludedCats, categories, selectedCategory, error, hasError, fetchCategory, fetchCats, addCatHandler, findCatById, updateSelectedCategory } = useContext(GlobalContext);
 
+  // TODO : understand why there is so much rendering 
   // console.log(`SearchCatForm => `);
 
   const [selectedCats, setSelectedCats] = useState([]);
   const [searchCatsArray, setSearchCatsArray] = useState([]);
   const [isLoading, setIsloading] = useState(true);
 
+  const mapCategories = categories.map(item => {
+    const option = { value: item.id, label: item.name };
+    return option;
+  });
+
   const toggleSelected = (catId) => {
     const newSelectedCats = [...selectedCats];
-
     if (!newSelectedCats.includes(catId)) {
       newSelectedCats.push(catId);
     } else {
@@ -38,21 +43,30 @@ const SearchCatForm = ({ limit, toggleForm }) => {
   };
 
   useEffect(() => {
+    updateSelectedCategory("");
+    fetchCategory();
+    return () => {
+      console.log('cleanup SearchCatForm');
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        let newSearchCatsArray = await fetchCats(limit);
+        let newSearchCatsArray = await fetchCats(limit, selectedCategory);
         setIsloading(false);
         setSearchCatsArray(newSearchCatsArray);
       } catch (e) {
-        dispatch({ type: "errorHandler", error: e });
+        // TODO try to dispatch error
+        console.log("error = " + e);
       }
     };
     fetchData();
 
     return () => {
-      console.log('cleanup');
+      console.log('cleanup SearchCatForm');
     };
-  }, [fetchCats, limit, dispatch]);
+  }, [selectedCategory]);
 
   if (hasError === true) { return <div>Error: {error.message}</div>; }
 
@@ -61,20 +75,29 @@ const SearchCatForm = ({ limit, toggleForm }) => {
       {isLoading ? (
         <span>Loading cats...</span>
       ) : (
-        <div className="SearchCatForm-results">
-          {searchCatsArray.map(cat => (
-            <img
-              alt=""
-              src={cat.url}
-              key={cat.id}
-              onClick={() => toggleSelected(cat.id)}
-              className={`
+        <>
+          <Select
+            options={mapCategories}
+            placeholder="Category"
+            value={selectedCategory ? selectedCategory.id : "prout"}
+            onChange={(option) => { updateSelectedCategory(option); }}
+            className="SearchCatForm-select"
+          />
+          <div className="SearchCatForm-results">
+            {searchCatsArray.map(cat => (
+              <img
+                alt=""
+                src={cat.url}
+                key={cat.id}
+                onClick={() => toggleSelected(cat.id)}
+                className={`
                 ${selectedCats.includes(cat.id) ? "SearchCatForm-selected" : ""}
                 ${excludedCats.includes(cat.id) ? "SearchCatForm-excluded" : ""}
               `}
-            />
-          ))}
-        </div>
+              />
+            ))}
+          </div>
+        </>
       )}
       {selectedCats.length > 0 && (
         <button

@@ -10,8 +10,7 @@ const App = () => {
 
   const initCatsData = useContext(GlobalContext);
 
-  // console.log(`App - initCatsData => `);
-  // console.log(initCatsData);
+  // console.log(`App => `);
 
   return (
     <GlobalProvider value={initCatsData}>

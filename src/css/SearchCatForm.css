@@ -1,6 +1,6 @@
 .SearchCatForm-results {
   overflow-y: scroll;
-  height: 100%;
+  height: calc(100% - 67px);
   display: flex;
   flex-wrap: wrap;
 }

@@ -6,7 +6,7 @@ const AddCat = () => {
 
   const { excludedCats, addCatHandler, findCatById } = useContext(GlobalContext);
 
-  // console.log(`AddCat - catsData => `);
+  // console.log(`AddCat => `);
 
   const [displayInput, setDisplayInput] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
