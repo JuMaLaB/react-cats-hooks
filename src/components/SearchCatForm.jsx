@@ -67,7 +67,7 @@ const SearchCatForm = ({ limit, toggleForm }) => {
         dispatch({ type: "errorHandler", error: e });
       }
     };
-    // updateSelectedCategory("");
+    updateSelectedCategory("");
     fetchCategory();
     return () => {
       console.log('cleanup SearchCatForm');
