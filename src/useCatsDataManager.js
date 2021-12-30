@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import catsReducer from "./catsReducer";
 
 const useCatsDataManager = () => {
@@ -25,7 +25,7 @@ const useCatsDataManager = () => {
 
   const baseUrl = "https://api.thecatapi.com/v1";
 
-  const addCatHandler = (cat) => {
+  const addCatHandler = useCallback((cat) => {
     const pushData = () => {
       catsArray.push({ "id": cat.id, "url": cat.url });
     };
@@ -33,14 +33,14 @@ const useCatsDataManager = () => {
     excludedCats.push(cat.id);
     dispatch({ type: "addCat", data: catsArray });
     return cat.id;
-  };
+  }, [catsArray, excludedCats]);
 
-  const updateSelectedCategory = (option) => {
+  const updateSelectedCategory = useCallback((option) => {
     const id = option.value ? option.value : option;
     dispatch({ type: "setSelectedCategory", id: id });
-  };
+  }, []);
 
-  const fetchCats = (limit, selectedCategory) => {
+  const fetchCats = useCallback((limit, selectedCategory) => {
     return fetch(`${baseUrl}/images/search?limit=${limit}&category_ids=${selectedCategory}`)
       .then((response) => {
         if (!response.ok) {
@@ -52,13 +52,13 @@ const useCatsDataManager = () => {
           console.log(error);
         }
       );
-  };
+  }, []);
 
-  const findCatById = (catId) => {
+  const findCatById = useCallback((catId) => {
     return fetch(`${baseUrl}/images/${catId}`)
       .then((response) => {
         if (!response.ok) {
-          throw Error('ERROR in response when findCatById !');
+          throw Error(`ERROR in response when findCatById with id = "${catId}"" !`);
         }
         return response.json();
       },
@@ -66,9 +66,11 @@ const useCatsDataManager = () => {
           console.log(error);
         }
       );
-  };
+  }, []);
 
   useEffect(() => {
+    let cancel = false;
+    if (cancel) return;
     const updateExcluded = (cats) => {
       cats.map((item) => {
         if (!excludedCats.includes(item.id)) {
@@ -76,7 +78,7 @@ const useCatsDataManager = () => {
         }
       });
     };
-    const fetchData = async () => {
+    const handleData = async () => {
       try {
         let catsFetchData = await fetchCats(6, selectedCategory);
         dispatch({ type: "setCats", data: catsFetchData });
@@ -85,12 +87,13 @@ const useCatsDataManager = () => {
         dispatch({ type: "errorHandler", error: e });
       }
     };
-    fetchData();
+    handleData();
 
     return () => {
+      cancel = true;
       console.log('cleanup useCatsDataManager data');
     };
-  }, []);
+  }, [excludedCats, fetchCats, selectedCategory]);
 
   const retObject = {
     isLoading,
