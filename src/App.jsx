@@ -3,7 +3,7 @@ import { GlobalProvider, GlobalContext } from "./GlobalState";
 
 import Cat from "./components/Cat";
 import AddCat from "./components/AddCat";
-import SearchCats from "./components/SearchCats";
+import SearchCat from "./components/SearchCat";
 import "./css/App.css";
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
           Reacats
           <div className="App-header-buttons">
             <AddCat />
-            <SearchCats />
+            <SearchCat />
           </div>
         </header>
         <main>

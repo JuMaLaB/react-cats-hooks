@@ -7,8 +7,8 @@ const catsReducer = (state, action) => {
       return { ...state, catsArray: action.data };
     case 'setCats':
       return { ...state, catsArray: action.data, isLoading: false, hasError: false };
-    case 'setCategories':
-      return { ...state, categories: action.data, hasError: false };
+    case 'setMapCategories':
+      return { ...state, mapCategories: action.data };
     case 'setSelectedCategory':
       return { ...state, selectedCategory: action.id, hasError: false };
     case 'errorHandler':

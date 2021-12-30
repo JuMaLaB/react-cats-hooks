@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import Select from "react-select";
 import { GlobalContext } from "../GlobalState";
+import catsReducer from "../catsReducer";
 
 import "../css/SearchCatForm.css";
 
 const SearchCatForm = ({ limit, toggleForm }) => {
 
-  const { excludedCats, categories, selectedCategory, error, hasError, fetchCategory, fetchCats, addCatHandler, findCatById, updateSelectedCategory } = useContext(GlobalContext);
+  const { excludedCats, selectedCategory, error, hasError, fetchCats, addCatHandler, findCatById, updateSelectedCategory } = useContext(GlobalContext);
+  const baseUrl = "https://api.thecatapi.com/v1";
 
   // TODO : understand why there is so much rendering 
   // console.log(`SearchCatForm => `);
@@ -14,11 +16,21 @@ const SearchCatForm = ({ limit, toggleForm }) => {
   const [selectedCats, setSelectedCats] = useState([]);
   const [searchCatsArray, setSearchCatsArray] = useState([]);
   const [isLoading, setIsloading] = useState(true);
+  const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [], });
 
-  const mapCategories = categories.map(item => {
-    const option = { value: item.id, label: item.name };
-    return option;
-  });
+  const fetchCategories = () => {
+    return fetch(`${baseUrl}/categories`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('ERROR in response when fetchCategories !');
+        }
+        return response.json();
+      },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
 
   const toggleSelected = (catId) => {
     const newSelectedCats = [...selectedCats];
@@ -43,7 +55,19 @@ const SearchCatForm = ({ limit, toggleForm }) => {
   };
 
   useEffect(() => {
-    updateSelectedCategory("");
+    const fetchCategory = async () => {
+      try {
+        let categoriesArray = await fetchCategories();
+        const newMapCategories = categoriesArray.map(item => {
+          const option = { value: item.id, label: item.name };
+          return option;
+        });
+        dispatch({ type: "setMapCategories", data: newMapCategories });
+      } catch (e) {
+        dispatch({ type: "errorHandler", error: e });
+      }
+    };
+    // updateSelectedCategory("");
     fetchCategory();
     return () => {
       console.log('cleanup SearchCatForm');
@@ -54,19 +78,18 @@ const SearchCatForm = ({ limit, toggleForm }) => {
     const fetchData = async () => {
       try {
         let newSearchCatsArray = await fetchCats(limit, selectedCategory);
-        setIsloading(false);
         setSearchCatsArray(newSearchCatsArray);
+        setIsloading(false);
       } catch (e) {
-        // TODO try to dispatch error
-        console.log("error = " + e);
+        dispatch({ type: "errorHandler", error: e });
       }
     };
     fetchData();
-
     return () => {
       console.log('cleanup SearchCatForm');
     };
-  }, [selectedCategory]);
+  }, [limit, fetchCats, selectedCategory]);
+
 
   if (hasError === true) { return <div>Error: {error.message}</div>; }
 

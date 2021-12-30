@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import SearchCatForm from "./SearchCatForm";
 
-import "../css/SearchCats.css";
+import "../css/SearchCat.css";
 
-const SearchCats = () => {
+const SearchCat = () => {
 
-  // console.log(`SearchCats => `);
+  console.log(`SearchCat => `);
 
   const [isFormDisplayed, setIsFormDisplayed] = useState(false);
 
@@ -29,4 +29,4 @@ const SearchCats = () => {
   );
 };
 
-export default SearchCats;
+export default SearchCat;

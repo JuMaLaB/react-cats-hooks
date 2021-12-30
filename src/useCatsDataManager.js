@@ -10,7 +10,6 @@ const useCatsDataManager = () => {
       isLoading,
       catsArray,
       excludedCats,
-      categories,
       selectedCategory,
       error,
       hasError,
@@ -19,7 +18,6 @@ const useCatsDataManager = () => {
     isLoading: true,
     catsArray: [],
     excludedCats: [],
-    categories: [],
     selectedCategory: "",
     error: null,
     hasError: false,
@@ -40,29 +38,6 @@ const useCatsDataManager = () => {
   const updateSelectedCategory = (option) => {
     const id = option.value ? option.value : option;
     dispatch({ type: "setSelectedCategory", id: id });
-  };
-
-  const fetchCategory = async () => {
-    try {
-      let categoriesArray = await fetchCategories();
-      dispatch({ type: "setCategories", data: categoriesArray });
-    } catch (e) {
-      dispatch({ type: "errorHandler", error: e });
-    }
-  };
-
-  const fetchCategories = () => {
-    return fetch(`${baseUrl}/categories`)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error('ERROR in response when fetchCategories !');
-        }
-        return response.json();
-      },
-        (error) => {
-          console.log(error);
-        }
-      );
   };
 
   const fetchCats = (limit, selectedCategory) => {
@@ -121,11 +96,9 @@ const useCatsDataManager = () => {
     isLoading,
     catsArray,
     excludedCats,
-    categories,
     selectedCategory,
     error,
     hasError,
-    fetchCategory,
     fetchCats,
     addCatHandler,
     findCatById,
