@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { GlobalContext } from "../GlobalState";
+import { GlobalContext } from "../utilities/GlobalState";
 
 const AddCatForm = ({ setDisplayInput }) => {
 

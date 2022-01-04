@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Outlet, useMatch } from "react-router-dom";
-import { GlobalProvider, GlobalContext } from "../GlobalState";
+import { GlobalProvider, GlobalContext } from "../utilities/GlobalState";
 
 import Header from '../components/Header';
 
@@ -14,7 +14,7 @@ export default function Home() {
       <div className="App row mb-5 justify-content-center">
         <Header />
         <main>
-          {match.pathname === '/' ? <span>Welcome to my home page !!!!</span> : null}
+          {match.pathname === '/' && (<span>Welcome to my home page !!!!</span>)}
           <Outlet />
         </main>
       </div >
