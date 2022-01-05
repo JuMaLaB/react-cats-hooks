@@ -9,6 +9,8 @@ const catsReducer = (state, action) => {
       return { ...state, catsArray: action.data, isLoading: false, hasError: false };
     case 'setBreeds':
       return { ...state, breedsArray: action.data, isLoading: false, hasError: false };
+    case 'setBreedImagesArray':
+      return { ...state, breedImagesArray: action.data, isLoading: false, hasError: false };
     case 'setMapCategories':
       return { ...state, mapCategories: action.data };
     case 'setSelectedCategory':

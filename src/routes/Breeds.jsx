@@ -22,7 +22,7 @@ const Breeds = () => {
         {breedsArray.map((breed) => (
           <div key={breed.id} className="breeds-details col-lg-2 col-md-4 col-6 p-2">
             <div className="col-12 border rounded p-2">
-              <div className="breed-nme">{breed.name}</div>
+              <div className="breed-name"><span>{breed.name}</span></div>
               <img className="w-100 rounded" src={breed.image?.url} alt="avatar"></img>
               <button onClick={() => { navigate(`/breed/${breed.id}`, { state: breed }); }}>show details</button><br />
             </div>

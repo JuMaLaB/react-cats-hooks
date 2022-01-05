@@ -1,5 +1,19 @@
 .breeds-list img {
-  height: 150px;
+  height: 150px;  
+  padding-bottom: 10px;
+}
+
+.breed-name {
+  font-weight: bold;
+  height: 55px;
+  line-height: 55px;
+}
+
+.breed-name span {
+  line-height: 1.2;
+  display: inline-block;  
+  vertical-align: middle;
+  padding-bottom: 10px;
 }
 
 .breeds-details button {
@@ -10,4 +24,30 @@
 
 .breeds-details button:hover {
   font-weight: bold;
+}
+
+.breed-details img {
+  margin-bottom: 20px;
+}
+
+.breed-details button {
+  border: 3px solid;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.breed-details-descr {
+  max-width: 500px;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.breed-details-images img {
+  height: 150px;
 }
