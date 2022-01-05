@@ -10,6 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const {
     isLoading,
     catsArray,
+    breedsArray,
     excludedCats,
     selectedCategory,
     error,
@@ -23,6 +24,7 @@ export const GlobalProvider = ({ children }) => {
   const provider = {
     isLoading,
     catsArray,
+    breedsArray,
     excludedCats,
     selectedCategory,
     error,

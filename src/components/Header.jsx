@@ -20,7 +20,8 @@ export default function About() {
       </div>
       <nav className="App-header-nav w-100">
         <Link to="/">Home</Link>
-        <Link to="/cats">My cats</Link>
+        <Link to="/breeds">Breeds</Link>
+        <Link to="/cats">My cats album</Link>
         <Link to="/about">About</Link>
       </nav>
     </header>

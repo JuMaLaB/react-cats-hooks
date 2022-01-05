@@ -9,6 +9,7 @@ const useCatsDataManager = () => {
     {
       isLoading,
       catsArray,
+      breedsArray,
       excludedCats,
       selectedCategory,
       error,
@@ -17,6 +18,7 @@ const useCatsDataManager = () => {
   ] = useReducer(catsReducer, {
     isLoading: true,
     catsArray: [],
+    breedsArray: [],
     excludedCats: [],
     selectedCategory: "",
     error: null,
@@ -45,6 +47,18 @@ const useCatsDataManager = () => {
       .then((response) => {
         if (!response.ok) {
           throw Error('ERROR in response when fetchCats !');
+        }
+        return response.json();
+      },
+        (error) => { console.log(error); }
+      );
+  };
+
+  const fetchBreeds = () => {
+    return fetch(`${baseUrl}/breeds`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('ERROR in response when fetchBreeds !');
         }
         return response.json();
       },
@@ -91,13 +105,36 @@ const useCatsDataManager = () => {
 
     return () => {
       mounted = false;
-      console.log('cleanup useCatsDataManager data');
+      console.log('cleanup useCatsDataManager cats data');
+    };
+  }, []);
+
+  useEffect(() => {
+
+    let mounted = true;
+    if (!mounted) return;
+
+    const handleBreedsData = async () => {
+      try {
+        let breedsFetchData = await fetchBreeds();
+        dispatch({ type: "setBreeds", data: breedsFetchData });
+      } catch (e) {
+        dispatch({ type: "errorHandler", error: e });
+      }
+    };
+
+    handleBreedsData();
+
+    return () => {
+      mounted = false;
+      console.log('cleanup useCatsDataManager breeds data');
     };
   }, []);
 
   const retObject = {
     isLoading,
     catsArray,
+    breedsArray,
     excludedCats,
     selectedCategory,
     error,

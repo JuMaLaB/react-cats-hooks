@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./routes/home";
 import About from "./routes/about";
+import Breeds from "./routes/Breeds";
+import BreedDetails from "./routes/BreedDetails";
 import CatList from './routes/CatList';
 import CatDetails from "./routes/CatDetails";
 
@@ -18,6 +20,10 @@ render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} >
+          <Route path="breeds" element={<Breeds />} />
+          <Route path="breed" element={<BreedDetails />} >
+            <Route path=":breedId" element={<BreedDetails />} />
+          </Route>
           <Route path="cats" element={<CatList />} />
           <Route path="cat" element={<CatDetails />} >
             <Route path=":catId" element={<CatDetails />} />

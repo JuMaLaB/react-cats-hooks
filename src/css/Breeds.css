@@ -1,0 +1,13 @@
+.breeds-list img {
+  height: 150px;
+}
+
+.breeds-details button {
+  border: none;
+  background-color: white;
+  text-decoration: underline;
+}
+
+.breeds-details button:hover {
+  font-weight: bold;
+}
