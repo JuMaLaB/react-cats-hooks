@@ -28,10 +28,12 @@
   outline: 8px solid green;
   outline-offset: -8px;
 }
+
 .SearchCatForm-select {
   display: inline-block;
   width: 50%;
 }
+
 .SearchCatForm-submit {
   font-size: 24px;
   position: absolute;
@@ -46,7 +48,7 @@
   padding: 5px;
 }
 
-.SearchCatForm-results .SearchCatForm-excluded {
+.SearchCatForm-excluded {
   opacity: 0.2;
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }

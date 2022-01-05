@@ -7,10 +7,12 @@ const AddCat = () => {
 
   // console.log(`AddCat => `);
 
-  const [displayInput, setDisplayInput] = useState(false);
+  const [isInputDisplayed, setInputDisplayed] = useState(false);
 
   const toggleInput = () => {
-    setDisplayInput(!displayInput);
+    const body = document.body;
+    !isInputDisplayed ? body.classList.add("noscroll") : body.classList.remove("noscroll");
+    setInputDisplayed(!isInputDisplayed);
   };
 
   return (
@@ -18,9 +20,9 @@ const AddCat = () => {
       <button className="CatInput-button" onClick={toggleInput}>
         Add cat
       </button>
-      {displayInput && (
-        <div className={`CatInput-overlay${displayInput ? " CatInput-overlay-displayed" : ""}`} onClick={toggleInput}>
-          <AddCatForm setDisplayInput={setDisplayInput} />
+      {isInputDisplayed && (
+        <div className={`CatInput-overlay${isInputDisplayed ? " CatInput-overlay-displayed" : ""}`} onClick={toggleInput}>
+          <AddCatForm setInputDisplayed={setInputDisplayed} />
         </div>
       )}
     </>

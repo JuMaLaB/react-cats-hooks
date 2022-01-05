@@ -10,6 +10,8 @@ const SearchCat = () => {
   const [isFormDisplayed, setIsFormDisplayed] = useState(false);
 
   const toggleForm = () => {
+    const body = document.body;
+    !isFormDisplayed ? body.classList.add("noscroll") : body.classList.remove("noscroll");
     setIsFormDisplayed(!isFormDisplayed);
   };
 

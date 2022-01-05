@@ -6,8 +6,9 @@ import SearchCat from "../components/SearchCat";
 
 import "../css/Header.css";
 
-export default function About() {
+export default function Header() {
 
+  // console.log(`Header => `);
 
   return (
     <header className="App-header w-100 mb-5">

@@ -9,6 +9,8 @@ export default function Home() {
   const initCatsData = useContext(GlobalContext);
   const match = useMatch(location.pathname);
 
+  // console.log(`About => `);
+
   return (
     <GlobalProvider value={initCatsData}>
       <div className="App row mb-5 justify-content-center">

@@ -29,7 +29,7 @@ const useCatsDataManager = () => {
 
   const addCatHandler = (cat) => {
     const pushData = () => {
-      catsArray.push({ "id": cat.id, "url": cat.url });
+      catsArray.push({ "breeds": cat.breeds, "id": cat.id, "url": cat.url, "width": cat.width, "height": cat.height });
     };
     pushData();
     excludedCats.push(cat.id);
