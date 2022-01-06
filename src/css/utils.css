@@ -1,0 +1,57 @@
+button {
+  margin-right: 10px;
+  padding: 10px 15px;
+  font-weight: 700;
+  background-color: transparent;
+  border: 3px solid;
+  border-radius: 5px;
+}
+
+.primary-button {
+  color: white;
+  border-color: white;
+}
+
+.primary-button > *:last-child {
+  margin-right: 0;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #00000080;
+}
+
+.cat-selected {
+  outline: 8px solid green;
+  outline-offset: -8px;
+}
+
+.cat-excluded {
+  cursor: not-allowed !important;
+  opacity: 0.2;
+}
+
+.card-button {
+  margin-right: 0;
+  font-weight: normal;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border: none;
+}
+
+.card-button:hover {
+  font-weight: bold;
+}
+
+.card-button:focus {
+  outline: none;
+}

@@ -43,11 +43,10 @@ const AddCatForm = ({ setDisplayInput }) => {
   return (
     <>
       <label className="mr-5">Enter your cat image id</label>
-      <div className="input-error">{errorMsg}</div>
-      <input className="CatInput-input" type="text"
+      <div className="cat-input-error">{errorMsg}</div>
+      <input className="cat-input" type="text" value={catId}
         onClick={(e) => e.stopPropagation()}
         onChange={(e) => handleInputValue(e)}
-        value={catId}
         onKeyPress={(e) => handleAdd(e)} />
     </>
   );

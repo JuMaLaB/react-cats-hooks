@@ -3,11 +3,10 @@ import Select from "react-select";
 import { GlobalContext } from "../utilities/GlobalState";
 import catsReducer from "../utilities/catsReducer";
 
-import "../css/SearchCatForm.css";
-
 const SearchCatForm = ({ limit, toggleForm }) => {
 
   const { excludedCats, selectedCategory, error, hasError, fetchCats, addCatHandler, findCatById, updateSelectedCategory } = useContext(GlobalContext);
+  const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [], });
   const baseUrl = "https://api.thecatapi.com/v1";
 
   // console.log(`SearchCatForm => `);
@@ -15,7 +14,18 @@ const SearchCatForm = ({ limit, toggleForm }) => {
   const [selectedCats, setSelectedCats] = useState([]);
   const [searchCatsArray, setSearchCatsArray] = useState([]);
   const [isLoading, setIsloading] = useState(true);
-  const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [], });
+
+  function onRenderCallback(
+    id, // the "id" prop of the Profiler tree that has just committed
+    phase, // either "mount" (if the tree just mounted) or "update" (if it re-rendered)
+    // actualDuration, // time spent rendering the committed update
+    // baseDuration, // estimated time to render the entire subtree without memoization
+    // startTime, // when React began rendering this update
+    // commitTime, // when React committed this update
+    // interactions // the Set of interactions belonging to this update
+  ) {
+    console.log(`id = ${id} / phase = ${phase}`);
+  }
 
   const toggleSelected = (catId) => {
     const newSelectedCats = [...selectedCats];
@@ -106,66 +116,35 @@ const SearchCatForm = ({ limit, toggleForm }) => {
 
   if (hasError === true) { return <div>Error: {error.message}</div>; }
 
-  /* function onRenderCallbackFull(
-    id, // the "id" prop of the Profiler tree that has just committed
-    phase, // either "mount" (if the tree just mounted) or "update" (if it re-rendered)
-    actualDuration, // time spent rendering the committed update
-    baseDuration, // estimated time to render the entire subtree without memoization
-    startTime, // when React began rendering this update
-    commitTime, // when React committed this update
-    interactions // the Set of interactions belonging to this update
-  ) {
-    console.log(`id = ${id} / phase = ${phase} / actualDuration = ${actualDuration} / baseDuration = ${baseDuration} / startTime = ${startTime} / commitTime = ${commitTime} / interactions = ${interactions}`);
-  } */
-
-  function onRenderCallback(
-    id, // the "id" prop of the Profiler tree that has just committed
-    phase, // either "mount" (if the tree just mounted) or "update" (if it re-rendered)
-    // actualDuration, // time spent rendering the committed update
-    // baseDuration, // estimated time to render the entire subtree without memoization
-    // startTime, // when React began rendering this update
-    // commitTime, // when React committed this update
-    // interactions // the Set of interactions belonging to this update
-  ) {
-    console.log(`id = ${id} / phase = ${phase}`);
-  }
-
   return (
     <Profiler id="SearchCatForm" onRender={onRenderCallback}>
-      <div className="SearchCatForm">
+      <div className="cat-search-form">
         {isLoading ? (
           <span>Loading cats...</span>
         ) : (
           <>
-            <Select
-              options={mapCategories}
-              placeholder="Category"
-              value={selectedCategory ? selectedCategory.id : "prout"}
-              onChange={(option) => { updateSelectedCategory(option); }}
-              className="SearchCatForm-select"
-            />
-            <div className="SearchCatForm-results">
+            <div className="cat-search-form-header">
+              <Select className="cat-search-form-select" placeholder="Category"
+                options={mapCategories}
+                value={selectedCategory ? selectedCategory.id : ""}
+                onChange={(option) => { updateSelectedCategory(option); }}
+              />
+              {selectedCats.length > 0 && (
+                <button className="cat-search-form-submit"
+                  onClick={() => { addCatsHandler(selectedCats); }} >
+                  Add selected cats
+                </button>
+              )}
+            </div>
+            <div className="cat-search-form-results custom-scroll">
               {searchCatsArray.map(cat => (
-                <img
-                  alt=""
-                  src={cat.url}
-                  key={cat.id}
+                <img key={cat.id} src={cat.url} alt="search img"
+                  className={`cat-search-form-img ${selectedCats.includes(cat.id) ? "cat-selected" : ""} ${excludedCats.includes(cat.id) ? "cat-excluded" : ""}`}
                   onClick={() => toggleSelected(cat.id)}
-                  className={`
-                ${selectedCats.includes(cat.id) ? "SearchCatForm-selected" : ""}
-                ${excludedCats.includes(cat.id) ? "SearchCatForm-excluded" : ""}
-              `}
                 />
               ))}
             </div>
           </>
-        )}
-        {selectedCats.length > 0 && (
-          <button
-            className="SearchCatForm-submit"
-            onClick={() => { addCatsHandler(selectedCats); }} >
-            Add Cats
-          </button>
         )}
       </div>
     </Profiler>

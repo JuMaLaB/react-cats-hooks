@@ -10,18 +10,16 @@ const AddCat = () => {
   const [isInputDisplayed, setInputDisplayed] = useState(false);
 
   const toggleInput = () => {
-    const body = document.body;
-    !isInputDisplayed ? body.classList.add("noscroll") : body.classList.remove("noscroll");
     setInputDisplayed(!isInputDisplayed);
   };
 
   return (
     <>
-      <button className="CatInput-button" onClick={toggleInput}>
+      <button className="header-add-cat primary-button" onClick={toggleInput}>
         Add cat
       </button>
       {isInputDisplayed && (
-        <div className={`CatInput-overlay${isInputDisplayed ? " CatInput-overlay-displayed" : ""}`} onClick={toggleInput}>
+        <div className="overlay cat-input-overlay" onClick={toggleInput}>
           <AddCatForm setInputDisplayed={setInputDisplayed} />
         </div>
       )}

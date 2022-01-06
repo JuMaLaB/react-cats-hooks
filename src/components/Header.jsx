@@ -11,18 +11,18 @@ export default function Header() {
   // console.log(`Header => `);
 
   return (
-    <header className="App-header w-100 mb-5">
-      <div className="App-header-title w-100">
-        Reacats
-        <div className="App-header-buttons">
+    <header className="app-header">
+      <div className="app-header-title">
+        <h1>Reacats</h1>
+        <div className="app-header-buttons">
           <AddCat />
           <SearchCat />
         </div>
       </div>
-      <nav className="App-header-nav w-100">
+      <nav className="app-header-nav">
         <Link to="/">Home</Link>
         <Link to="/breeds">Breeds</Link>
-        <Link to="/cats">My cats album</Link>
+        <Link to="/cats">My album</Link>
         <Link to="/about">About</Link>
       </nav>
     </header>

@@ -1,0 +1,18 @@
+.app-cats-list {
+  height: 100%;
+  margin-top: 20px;
+}
+
+.cats-list-card-img {
+  height: 200px;
+}
+
+/* cat details */
+.app-cat-details {
+  height: 100%;
+  margin-top: 20px;
+}
+
+.cat-details-img {
+  margin-bottom: 20px;
+}

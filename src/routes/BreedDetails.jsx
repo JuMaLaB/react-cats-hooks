@@ -3,10 +3,12 @@ import { useLocation } from "react-router-dom";
 import { GlobalContext } from "../utilities/GlobalState";
 import catsReducer from "../utilities/catsReducer";
 
-const BreedDetail = () => {
+const BreedDetails = () => {
 
   const { excludedCats, addCatHandler, findCatById, error, hasError } = useContext(GlobalContext);
   const [{ breedImagesArray }, dispatch] = useReducer(catsReducer, { breedImagesArray: [], });
+
+  // console.log(`BreedDetails => `);
 
   const baseUrl = "https://api.thecatapi.com/v1";
   const location = useLocation();
@@ -16,8 +18,6 @@ const BreedDetail = () => {
 
   const maxWidth = 500;
   const calcMaxHeight = (breed.image?.height / breed.image?.width) * maxWidth + "px";
-
-  // console.log(`BreedDetail => `);
 
   const toggleSelected = (catId) => {
     const newSelectedCats = [...selectedCats];
@@ -66,42 +66,56 @@ const BreedDetail = () => {
   };
 
   return (
-    <>
+    <section className="app-breed-details text-center custom-scroll">
+
+      <h2>Breed : {breed.name}</h2>
       <div key={breed.id} className="breed-details">
-        <img src={breed.image?.url} alt="breed img" width={`${breed.image?.width}px`} height={`${breed.image?.height}px`} style={{ maxWidth: '500px', maxHeight: calcMaxHeight }}></img>
+        <img className="breed-details-img" src={breed.image?.url} alt="breed img"
+          width={`${breed.image?.width}px`}
+          height={`${breed.image?.height}px`}
+          style={{ maxWidth: '500px', maxHeight: calcMaxHeight }}></img>
         <div className="breed-details-descr">
-          Name = {breed.name}<br /><br />
           Temperament = {breed.temperament}<br /><br />
           Description = {breed.description}<br />
         </div>
-        <button onClick={() => handleBreedImages(breed.id)}>Show breed images</button>
+        <button className="breed-details-button"
+          onClick={() => handleBreedImages(breed.id)}>
+          Show breed images
+        </button>
       </div >
-      <div className="breed-details-images row px-5">
-        {hasError && (
-          <div>Error: {error.message}</div>
-        )}
-        {isLoading && (
-          <div>Loading...</div>
-        )}
-        {breedImagesArray && (
-          breedImagesArray.map((breed) => (
-            <div key={breed.id} className="breed-details-image-details col-lg-2 col-md-4 col-6 p-2">
-              <div className={`col-12 border rounded p-2 ${selectedCats.includes(breed.id) ? "SearchCatForm-selected" : ""} ${excludedCats.includes(breed.id) ? "SearchCatForm-excluded" : ""}`}>
-                <img className="w-100 rounded" alt="avatar" src={breed.url} onClick={() => toggleSelected(breed.id)}></img>
+
+      {selectedCats.length > 0 && (
+        <button className="breed-details-button"
+          onClick={() => { addCatsHandler(selectedCats); }} >
+          Add selected cats
+        </button>
+      )}
+
+      <div className="breed-details-images container-fluid">
+        <div className="row">
+          {hasError && (
+            <div>Error: {error.message}</div>
+          )}
+          {isLoading && (
+            <div>Loading...</div>
+          )}
+          {breedImagesArray && (
+            breedImagesArray.map((breed) => (
+              <div key={breed.id} className="breed-details-image-details col-lg-2 col-md-4 col-6 py-2">
+                <div className="col-12 border rounded p-2">
+                  <img className={`w-100 rounded ${selectedCats.includes(breed.id) ? "cat-selected" : ""} ${excludedCats.includes(breed.id) ? "cat-excluded" : ""}`}
+                    src={breed.url}
+                    alt="avatar"
+                    onClick={() => toggleSelected(breed.id)}></img>
+                </div>
               </div>
-            </div>
-          ))
-        )}
-        {selectedCats.length > 0 && (
-          <button
-            className=""
-            onClick={() => { addCatsHandler(selectedCats); }} >
-            Add Cats
-          </button>
-        )}
+            ))
+          )}
+        </div>
       </div>
-    </>
+
+    </section>
   );
 };
 
-export default BreedDetail;
+export default BreedDetails;

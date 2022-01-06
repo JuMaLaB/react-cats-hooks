@@ -4,12 +4,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./routes/home";
 import About from "./routes/about";
-import Breeds from "./routes/Breeds";
+import BreedsList from "./routes/BreedsList";
 import BreedDetails from "./routes/BreedDetails";
 import CatList from './routes/CatList';
 import CatDetails from "./routes/CatDetails";
 
+import ScrollTop from './utilities/ScrollTop';
+
 import './css/index.css';
+import './css/utils.css';
 import reportWebVitals from './reportWebVitals';
 
 const rootElement = document.getElementById("root");
@@ -18,9 +21,10 @@ const errorRouteMsg = "There's nothing here!";
 render(
   <React.StrictMode>
     <BrowserRouter>
+      <ScrollTop />
       <Routes>
         <Route path="/" element={<Home />} >
-          <Route path="breeds" element={<Breeds />} />
+          <Route path="breeds" element={<BreedsList />} />
           <Route path="breed" element={<BreedDetails />} >
             <Route path=":breedId" element={<BreedDetails />} />
           </Route>

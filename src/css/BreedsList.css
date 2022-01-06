@@ -1,0 +1,45 @@
+.app-breeds-list {
+  height: 100%;
+  margin-top: 20px;
+}
+
+.breeds-list-card-img {
+  height: 150px;
+  padding-bottom: 10px;
+}
+
+.breeds-list-card-name {
+  line-height: 55px;
+}
+
+.breeds-list-card-name span {
+  display: inline-block;
+  padding-bottom: 10px;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+/* breed details */
+.app-breed-details {
+  height: 100%;
+  margin-top: 20px;
+}
+
+.breed-details-img {
+  margin-bottom: 20px;
+}
+
+.breed-details-descr {
+  max-width: 500px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.breed-details-button {
+  margin-bottom: 20px;
+}
+
+.breed-details-images img {
+  height: 150px;
+  cursor: pointer;
+}

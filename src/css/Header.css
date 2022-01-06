@@ -1,35 +1,36 @@
-.App-header {
+.app-header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+.app-header-title {
+  display: flex;
   justify-content: space-between;
-  background-color: #282c34;
-  font-size: 35px;
+  padding: 10px;
   color: white;
+  background-color: #282c34;
+  border-radius: 5px 5px 0 0;
 }
 
-.App-header-title {
- display: flex;
- padding: 15px;
- justify-content: space-between;
+.app-header-nav {
+  padding: 10px;
+  color: white;
+  text-align: center;
+  background-color: lightslategrey;
+  border-radius: 0 0 5px 5px;
 }
 
-.App-header-buttons > *:first-child {
-  margin-right: 10px;
+.app-header-buttons {
+  display: flex;
 }
 
-.App-header-nav {
- background-color: lightslategrey;
- color: white;
-}
-
-nav > a {
+.app-header nav > a {
+  margin-right: 20px;
   color: white;
   font-size: 20px;
-  margin-right: 20px;
 }
 
-nav > a:hover {
-  color: black;
+.app-header nav > a:hover {
   margin-right: 20px;
+  color: black;
 }

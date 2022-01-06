@@ -1,0 +1,13 @@
+.app-aside {
+  height: 100vh;
+  padding: 10px;
+  text-align: center;
+}
+
+.app-aside-container {
+  height: 100%;
+  padding: 10px 0;
+  color: white;
+  background-color: lightslategrey;
+  border-radius: 5px 20px 20px 5px;
+}
