@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { GlobalContext } from "../utilities/GlobalState";
 
-const AddCatForm = ({ setDisplayInput }) => {
+const AddCatForm = ({ setInputDisplayed }) => {
 
   const { excludedCats, addCatHandler, findCatById } = useContext(GlobalContext);
 
@@ -21,7 +21,7 @@ const AddCatForm = ({ setDisplayInput }) => {
       try {
         let cat = await findCatById(catId);
         addCatHandler(cat);
-        setDisplayInput(false);
+        setInputDisplayed(false);
       } catch (e) {
         setErrorMsg(e.message);
       }
