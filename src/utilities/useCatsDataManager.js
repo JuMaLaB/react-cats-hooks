@@ -11,6 +11,7 @@ const useCatsDataManager = () => {
       catsArray,
       breedsArray,
       excludedCats,
+      deletedCats,
       error,
       hasError,
     }, dispatch
@@ -19,6 +20,7 @@ const useCatsDataManager = () => {
     catsArray: [],
     breedsArray: [],
     excludedCats: [],
+    deletedCats: [],
     error: null,
     hasError: false,
   });
@@ -39,8 +41,24 @@ const useCatsDataManager = () => {
     cats.forEach((deletedCat) => {
       const index = catsArray.indexOf(deletedCat);
       newCatsArray.splice(index, 1);
+      const indexExcluded = excludedCats.indexOf(deletedCat.id);
+      excludedCats.splice(indexExcluded, 1);
     });
     dispatch({ type: "deleteCat", data: newCatsArray });
+    dispatch({ type: "setDeletedCat", data: [] });
+  };
+
+  const toggleDeletedHandler = (cat) => {
+    const newDeletedCats = [...deletedCats];
+    if (!newDeletedCats.includes(cat)) {
+      newDeletedCats.push(cat);
+    } else {
+      const index = newDeletedCats.indexOf(cat);
+      if (index > -1) {
+        newDeletedCats.splice(index, 1);
+      }
+    }
+    dispatch({ type: "setDeletedCat", data: newDeletedCats });
   };
 
   const fetchCats = (limit, selectedCategory) => {
@@ -137,11 +155,13 @@ const useCatsDataManager = () => {
     catsArray,
     breedsArray,
     excludedCats,
+    deletedCats,
     error,
     hasError,
     fetchCats,
     addCatHandler,
     deleteCatsHandler,
+    toggleDeletedHandler,
     findCatById,
   };
 

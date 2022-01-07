@@ -6,7 +6,7 @@ import "../css/BreedsList.css";
 
 const BreedsList = () => {
 
-  const { isLoading, breedsArray, error, hasError, } = useContext(GlobalContext);
+  const { isLoading, breedsArray, error, hasError } = useContext(GlobalContext);
   let navigate = useNavigate();
 
   // console.log(`BreedsList => `);

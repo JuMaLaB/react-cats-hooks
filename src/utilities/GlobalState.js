@@ -12,11 +12,13 @@ export const GlobalProvider = ({ children }) => {
     catsArray,
     breedsArray,
     excludedCats,
+    deletedCats,
     error,
     hasError,
     fetchCats,
     addCatHandler,
     deleteCatsHandler,
+    toggleDeletedHandler,
     findCatById,
   } = useCatsDataManager();
 
@@ -25,11 +27,13 @@ export const GlobalProvider = ({ children }) => {
     catsArray,
     breedsArray,
     excludedCats,
+    deletedCats,
     error,
     hasError,
     fetchCats,
     addCatHandler,
     deleteCatsHandler,
+    toggleDeletedHandler,
     findCatById,
   };
 

@@ -6,7 +6,7 @@ import catsReducer from "../utilities/catsReducer";
 const SearchCatForm = ({ limit, toggleForm }) => {
 
   const { excludedCats, error, hasError, fetchCats, addCatHandler, findCatById } = useContext(GlobalContext);
-  const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [], });
+  const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [] });
   const baseUrl = "https://api.thecatapi.com/v1";
 
   // console.log(`SearchCatForm => `);

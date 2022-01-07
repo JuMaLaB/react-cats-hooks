@@ -6,7 +6,7 @@ import catsReducer from "../utilities/catsReducer";
 const BreedDetails = () => {
 
   const { excludedCats, addCatHandler, findCatById, error, hasError } = useContext(GlobalContext);
-  const [{ breedImagesArray }, dispatch] = useReducer(catsReducer, { breedImagesArray: [], });
+  const [{ breedImagesArray }, dispatch] = useReducer(catsReducer, { breedImagesArray: [] });
 
   // console.log(`BreedDetails => `);
 

@@ -4,10 +4,18 @@
   text-align: center;
 }
 
-.app-aside-container {
+.aside-cats-list {
   height: 100%;
   padding: 10px 0;
   color: white;
   background-color: lightslategrey;
   border-radius: 5px 20px 20px 5px;
+}
+
+.aside-cats-list-card {
+  position: relative;
+}
+
+.aside-cats-list-card:hover .custom-close {
+  display: block;
 }

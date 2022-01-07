@@ -15,6 +15,8 @@ const catsReducer = (state, action) => {
       return { ...state, breedImagesArray: action.data, isLoading: false, hasError: false };
     case 'setCategories':
       return { ...state, mapCategories: action.data };
+    case 'setDeletedCat':
+      return { ...state, deletedCats: action.data };
     case 'errorHandler':
       return { ...state, hasError: true, error: action.error };
     default:
