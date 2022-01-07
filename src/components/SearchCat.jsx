@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { GlobalContext } from "../utilities/GlobalState";
 import SearchCatForm from "./SearchCatForm";
 
 import "../css/SearchCat.css";
 
 const SearchCat = () => {
 
+  const { toggleSelectedHandler } = useContext(GlobalContext);
   // console.log(`SearchCat => `);
 
   const [isFormDisplayed, setIsFormDisplayed] = useState(false);
 
   const toggleForm = () => {
     setIsFormDisplayed(!isFormDisplayed);
+    toggleSelectedHandler(null);
   };
 
   return (

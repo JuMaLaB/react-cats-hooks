@@ -8,33 +8,37 @@ export const GlobalProvider = ({ children }) => {
   // console.log(`GlobalProvider => `);
 
   const {
+    baseUrl,
     isLoading,
     catsArray,
     breedsArray,
-    excludedCats,
+    selectedCats,
     deletedCats,
+    excludedCats,
     error,
     hasError,
     fetchCats,
-    addCatHandler,
+    addCatsHandler,
+    toggleSelectedHandler,
     deleteCatsHandler,
     toggleDeletedHandler,
-    findCatById,
   } = useCatsDataManager();
 
   const provider = {
+    baseUrl,
     isLoading,
     catsArray,
     breedsArray,
-    excludedCats,
+    selectedCats,
     deletedCats,
+    excludedCats,
     error,
     hasError,
     fetchCats,
-    addCatHandler,
+    addCatsHandler,
+    toggleSelectedHandler,
     deleteCatsHandler,
     toggleDeletedHandler,
-    findCatById,
   };
 
   return (

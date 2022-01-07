@@ -5,12 +5,10 @@ import catsReducer from "../utilities/catsReducer";
 
 const SearchCatForm = ({ limit, toggleForm }) => {
 
-  const { excludedCats, error, hasError, fetchCats, addCatHandler, findCatById } = useContext(GlobalContext);
+  const { baseUrl, selectedCats, excludedCats, error, hasError, fetchCats, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
   const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [] });
-  const baseUrl = "https://api.thecatapi.com/v1";
 
   // console.log(`SearchCatForm => `);
-  const [selectedCats, setSelectedCats] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchCatsArray, setSearchCatsArray] = useState([]);
   const [isLoading, setIsloading] = useState(true);
@@ -27,25 +25,8 @@ const SearchCatForm = ({ limit, toggleForm }) => {
     console.log(`id = ${id} / phase = ${phase}`);
   }
 
-  const toggleSelected = (catId) => {
-    const newSelectedCats = [...selectedCats];
-    if (!newSelectedCats.includes(catId)) {
-      newSelectedCats.push(catId);
-    } else {
-      const index = newSelectedCats.indexOf(catId);
-      if (index > -1) {
-        newSelectedCats.splice(index, 1);
-      }
-    }
-    setSelectedCats(newSelectedCats);
-  };
-
-  const addCatsHandler = (selectedCats) => {
-    selectedCats.forEach(async (catId) => {
-      let cat = await findCatById(catId);
-      addCatHandler(cat);
-    });
-    setSelectedCats([]);
+  const handleAdd = () => {
+    addCatsHandler(selectedCats);
     toggleForm();
   };
 
@@ -100,6 +81,7 @@ const SearchCatForm = ({ limit, toggleForm }) => {
 
     let mounted = true;
     if (!mounted) return;
+    setIsloading(true);
 
     const handleData = async () => {
       try {
@@ -125,28 +107,29 @@ const SearchCatForm = ({ limit, toggleForm }) => {
   return (
     <Profiler id="SearchCatForm" onRender={onRenderCallback}>
       <div className="cat-search-form">
+        <div className="cat-search-form-header">
+          <Select className="cat-search-form-select" placeholder="Category"
+            options={mapCategories}
+            value={selectedCategory ? selectedCategory.id : ""}
+            onChange={(option) => { updateSelectedCategory(option); }}
+          />
+          {selectedCats.length > 0 && (
+            <button className="cat-search-form-submit"
+              onClick={() => { handleAdd(); }} >
+              Add selected cats
+            </button>
+          )}
+        </div>
         {isLoading ? (
-          <span>Loading cats...</span>
+          <span className="text-secondary">Loading cats...</span>
         ) : (
           <>
-            <div className="cat-search-form-header">
-              <Select className="cat-search-form-select" placeholder="Category"
-                options={mapCategories}
-                value={selectedCategory ? selectedCategory.id : ""}
-                onChange={(option) => { updateSelectedCategory(option); }}
-              />
-              {selectedCats.length > 0 && (
-                <button className="cat-search-form-submit"
-                  onClick={() => { addCatsHandler(selectedCats); }} >
-                  Add selected cats
-                </button>
-              )}
-            </div>
             <div className="cat-search-form-results custom-scroll">
               {searchCatsArray.map(cat => (
                 <img key={cat.id} src={cat.url} alt="search img"
-                  className={`cat-search-form-img ${selectedCats.includes(cat.id) ? "cat-selected" : ""} ${excludedCats.includes(cat.id) ? "cat-excluded" : ""}`}
-                  onClick={() => toggleSelected(cat.id)}
+                  className={`cat-search-form-img ${selectedCats.includes(cat) ? "cat-selected" : ""}
+                    ${excludedCats.includes(cat.id) ? "cat-excluded" : ""}`}
+                  onClick={() => toggleSelectedHandler(cat)}
                 />
               ))}
             </div>

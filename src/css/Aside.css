@@ -19,3 +19,7 @@
 .aside-cats-list-card:hover .custom-close {
   display: block;
 }
+
+.aside-cats-list-card-image {
+  cursor: pointer;
+}

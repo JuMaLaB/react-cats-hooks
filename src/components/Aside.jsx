@@ -17,7 +17,7 @@ export default function Aside() {
           <div key={cat.id} className="aside-cats-list-card p-2">
             {!deletedCats.includes(cat) ? <span className="custom-close" onClick={() => deleteCatsHandler([cat])}></span> : ""}
             <div className={`col-12 border rounded p-2 ${deletedCats.includes(cat) ? "cat-deleted" : ""}`}>
-              <img className="w-100 rounded " src={cat.url} alt="avatar"
+              <img className="aside-cats-list-card-image w-100 rounded " src={cat.url} alt="avatar"
                 onClick={() => toggleDeletedHandler(cat)}></img>
             </div>
           </div>

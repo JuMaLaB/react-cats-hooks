@@ -9,6 +9,7 @@
 
 .cats-list-card-img {
   height: 200px;
+  cursor: pointer;
 }
 
 /* cat details */

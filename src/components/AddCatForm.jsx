@@ -3,7 +3,7 @@ import { GlobalContext } from "../utilities/GlobalState";
 
 const AddCatForm = ({ setInputDisplayed }) => {
 
-  const { excludedCats, addCatHandler, findCatById } = useContext(GlobalContext);
+  const { baseUrl, excludedCats, addCatsHandler } = useContext(GlobalContext);
 
   // console.log(`AddCatForm => `);
 
@@ -15,12 +15,24 @@ const AddCatForm = ({ setInputDisplayed }) => {
     setCatId(e.target.value);
   };
 
+  const findCatById = (catId) => {
+    return fetch(`${baseUrl}/images/${catId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(`ERROR in response when findCatById with id = "${catId}"" !`);
+        }
+        return response.json();
+      },
+        (error) => { console.log(error); }
+      );
+  };
+
   const handleAdd = async (e) => {
     if (e.key !== "Enter") return;
     if (!excludedCats.includes(catId)) {
       try {
         let cat = await findCatById(catId);
-        addCatHandler(cat);
+        addCatsHandler([cat]);
         setInputDisplayed(false);
       } catch (e) {
         setErrorMsg(e.message);

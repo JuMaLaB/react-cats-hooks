@@ -5,40 +5,17 @@ import catsReducer from "../utilities/catsReducer";
 
 const BreedDetails = () => {
 
-  const { excludedCats, addCatHandler, findCatById, error, hasError } = useContext(GlobalContext);
+  const { baseUrl, selectedCats, excludedCats, addCatsHandler, error, hasError, toggleSelectedHandler } = useContext(GlobalContext);
   const [{ breedImagesArray }, dispatch] = useReducer(catsReducer, { breedImagesArray: [] });
 
   // console.log(`BreedDetails => `);
 
-  const baseUrl = "https://api.thecatapi.com/v1";
   const location = useLocation();
   const breed = location.state;
   const [isLoading, setIsloading] = useState(false);
-  const [selectedCats, setSelectedCats] = useState([]);
 
   const maxWidth = 500;
   const calcMaxHeight = (breed.image?.height / breed.image?.width) * maxWidth + "px";
-
-  const toggleSelected = (catId) => {
-    const newSelectedCats = [...selectedCats];
-    if (!newSelectedCats.includes(catId)) {
-      newSelectedCats.push(catId);
-    } else {
-      const index = newSelectedCats.indexOf(catId);
-      if (index > -1) {
-        newSelectedCats.splice(index, 1);
-      }
-    }
-    setSelectedCats(newSelectedCats);
-  };
-
-  const addCatsHandler = (selectedCats) => {
-    selectedCats.forEach(async (catId) => {
-      let cat = await findCatById(catId);
-      addCatHandler(cat);
-    });
-    setSelectedCats([]);
-  };
 
   const fetchBreedImages = (breedId) => {
     return fetch(`${baseUrl}/images/search?breed_id=${breedId}&limit=100`)
@@ -100,13 +77,13 @@ const BreedDetails = () => {
             <div>Loading...</div>
           )}
           {breedImagesArray && (
-            breedImagesArray.map((breed) => (
-              <div key={breed.id} className="breed-details-image-details col-lg-2 col-md-4 col-6 py-2">
-                <div className={`col-12 border rounded p-2 ${selectedCats.includes(breed.id) ? "cat-selected" : ""}`}>
-                  <img className={`w-100 rounded ${excludedCats.includes(breed.id) ? "cat-excluded" : ""}`}
-                    src={breed.url}
+            breedImagesArray.map((cat) => (
+              <div key={cat.id} className="breed-details-image-details col-lg-2 col-md-4 col-6 py-2">
+                <div className={`col-12 border rounded p-2 ${selectedCats.includes(cat) ? "cat-selected" : ""}`}>
+                  <img className={`w-100 rounded ${excludedCats.includes(cat.id) ? "cat-excluded" : ""}`}
+                    src={cat.url}
                     alt="avatar"
-                    onClick={() => toggleSelected(breed.id)}></img>
+                    onClick={() => toggleSelectedHandler(cat)}></img>
                 </div>
               </div>
             ))

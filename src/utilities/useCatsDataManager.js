@@ -5,13 +5,16 @@ const useCatsDataManager = () => {
 
   // console.log(`useCatsDataManager => `);
 
+  const baseUrl = "https://api.thecatapi.com/v1";
+
   const [
     {
       isLoading,
       catsArray,
       breedsArray,
-      excludedCats,
+      selectedCats,
       deletedCats,
+      excludedCats,
       error,
       hasError,
     }, dispatch
@@ -19,21 +22,44 @@ const useCatsDataManager = () => {
     isLoading: true,
     catsArray: [],
     breedsArray: [],
-    excludedCats: [],
+    selectedCats: [],
     deletedCats: [],
+    excludedCats: [],
     error: null,
     hasError: false,
   });
 
-  const baseUrl = "https://api.thecatapi.com/v1";
+  const addCatsHandler = (cats) => {
+    const newCatsArray = [...catsArray];
+    const newExcludedCats = [...excludedCats];
+    cats.forEach((selectedCat) => {
+      newCatsArray.push(selectedCat);
+      newExcludedCats.push(selectedCat.id);
+    });
+    dispatch({ type: "addCat", data: newCatsArray });
+    dispatch({ type: "setExcludedCat", data: newExcludedCats });
+    dispatch({ type: "setSelectedCat", data: [] });
+  };
 
-  const addCatHandler = (cat) => {
-    const pushData = () => {
-      catsArray.push({ "breeds": cat.breeds, "id": cat.id, "url": cat.url, "width": cat.width, "height": cat.height });
-    };
-    pushData();
-    excludedCats.push(cat.id);
-    dispatch({ type: "addCat", data: catsArray });
+  const toggleSelectedHandler = (cat) => {
+    if (cat === null) {
+      dispatch({ type: "setSelectedCat", data: [] });
+      return;
+    }
+    const i = excludedCats.indexOf(cat.id);
+    if (i > -1) {
+      return;
+    }
+    const newSelectedCats = [...selectedCats];
+    if (!newSelectedCats.includes(cat)) {
+      newSelectedCats.push(cat);
+    } else {
+      const index = newSelectedCats.indexOf(cat);
+      if (index > -1) {
+        newSelectedCats.splice(index, 1);
+      }
+    }
+    dispatch({ type: "setSelectedCat", data: newSelectedCats });
   };
 
   const deleteCatsHandler = (cats) => {
@@ -85,49 +111,6 @@ const useCatsDataManager = () => {
       );
   };
 
-  const findCatById = (catId) => {
-    return fetch(`${baseUrl}/images/${catId}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(`ERROR in response when findCatById with id = "${catId}"" !`);
-        }
-        return response.json();
-      },
-        (error) => { console.log(error); }
-      );
-  };
-
-  useEffect(() => {
-
-    let mounted = true;
-    if (!mounted) return;
-
-    const updateExcluded = (cats) => {
-      cats.map((item) => {
-        if (!excludedCats.includes(item.id)) {
-          excludedCats.push(item.id);
-        }
-      });
-    };
-
-    const handleData = async () => {
-      try {
-        let catsFetchData = await fetchCats(6, "");
-        dispatch({ type: "setCats", data: catsFetchData });
-        updateExcluded(catsFetchData);
-      } catch (e) {
-        dispatch({ type: "errorHandler", error: e });
-      }
-    };
-
-    handleData();
-
-    return () => {
-      mounted = false;
-      console.log('cleanup useCatsDataManager cats data');
-    };
-  }, []);
-
   useEffect(() => {
 
     let mounted = true;
@@ -151,18 +134,20 @@ const useCatsDataManager = () => {
   }, []);
 
   const retObject = {
+    baseUrl,
     isLoading,
     catsArray,
     breedsArray,
-    excludedCats,
+    selectedCats,
     deletedCats,
+    excludedCats,
     error,
     hasError,
     fetchCats,
-    addCatHandler,
+    addCatsHandler,
+    toggleSelectedHandler,
     deleteCatsHandler,
     toggleDeletedHandler,
-    findCatById,
   };
 
   return retObject;
