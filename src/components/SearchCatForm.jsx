@@ -5,13 +5,13 @@ import catsReducer from "../utilities/catsReducer";
 
 const SearchCatForm = ({ limit, toggleForm }) => {
 
-  const { excludedCats, selectedCategory, error, hasError, fetchCats, addCatHandler, findCatById, updateSelectedCategory } = useContext(GlobalContext);
+  const { excludedCats, error, hasError, fetchCats, addCatHandler, findCatById } = useContext(GlobalContext);
   const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [], });
   const baseUrl = "https://api.thecatapi.com/v1";
 
   // console.log(`SearchCatForm => `);
-
   const [selectedCats, setSelectedCats] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [searchCatsArray, setSearchCatsArray] = useState([]);
   const [isLoading, setIsloading] = useState(true);
 
@@ -49,6 +49,12 @@ const SearchCatForm = ({ limit, toggleForm }) => {
     toggleForm();
   };
 
+  const updateSelectedCategory = (option) => {
+    const id = option.value ? option.value : option;
+    setSelectedCategory(id);
+    dispatch({ type: "setSelectedCategory", id: id });
+  };
+
   useEffect(() => {
 
     let mounted = true;
@@ -75,7 +81,7 @@ const SearchCatForm = ({ limit, toggleForm }) => {
           const option = { value: item.id, label: item.name };
           return option;
         });
-        dispatch({ type: "setMapCategories", data: newMapCategories });
+        dispatch({ type: "setCategories", data: newMapCategories });
       } catch (e) {
         dispatch({ type: "errorHandler", error: e });
       }

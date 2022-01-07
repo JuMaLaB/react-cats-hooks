@@ -58,7 +58,7 @@ const BreedDetails = () => {
     try {
       setIsloading(true);
       let breedImagesArray = await fetchBreedImages(breedId);
-      dispatch({ type: "setBreedImagesArray", data: breedImagesArray });
+      dispatch({ type: "setBreedImages", data: breedImagesArray });
       setIsloading(false);
     } catch (e) {
       dispatch({ type: "errorHandler", error: e });
@@ -102,8 +102,8 @@ const BreedDetails = () => {
           {breedImagesArray && (
             breedImagesArray.map((breed) => (
               <div key={breed.id} className="breed-details-image-details col-lg-2 col-md-4 col-6 py-2">
-                <div className="col-12 border rounded p-2">
-                  <img className={`w-100 rounded ${selectedCats.includes(breed.id) ? "cat-selected" : ""} ${excludedCats.includes(breed.id) ? "cat-excluded" : ""}`}
+                <div className={`col-12 border rounded p-2 ${selectedCats.includes(breed.id) ? "cat-selected" : ""}`}>
+                  <img className={`w-100 rounded ${excludedCats.includes(breed.id) ? "cat-excluded" : ""}`}
                     src={breed.url}
                     alt="avatar"
                     onClick={() => toggleSelected(breed.id)}></img>

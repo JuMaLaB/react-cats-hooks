@@ -40,6 +40,11 @@ button {
   opacity: 0.2;
 }
 
+.cat-deleted {
+  outline: 8px solid red;
+  outline-offset: -8px;
+}
+
 .card-button {
   margin-right: 0;
   font-weight: normal;

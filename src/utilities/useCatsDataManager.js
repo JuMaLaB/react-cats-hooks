@@ -11,7 +11,6 @@ const useCatsDataManager = () => {
       catsArray,
       breedsArray,
       excludedCats,
-      selectedCategory,
       error,
       hasError,
     }, dispatch
@@ -20,7 +19,6 @@ const useCatsDataManager = () => {
     catsArray: [],
     breedsArray: [],
     excludedCats: [],
-    selectedCategory: "",
     error: null,
     hasError: false,
   });
@@ -34,12 +32,15 @@ const useCatsDataManager = () => {
     pushData();
     excludedCats.push(cat.id);
     dispatch({ type: "addCat", data: catsArray });
-    return cat.id;
   };
 
-  const updateSelectedCategory = (option) => {
-    const id = option.value ? option.value : option;
-    dispatch({ type: "setSelectedCategory", id: id });
+  const deleteCatsHandler = (cats) => {
+    const newCatsArray = [...catsArray];
+    cats.forEach((deletedCat) => {
+      const index = catsArray.indexOf(deletedCat);
+      newCatsArray.splice(index, 1);
+    });
+    dispatch({ type: "deleteCat", data: newCatsArray });
   };
 
   const fetchCats = (limit, selectedCategory) => {
@@ -93,7 +94,7 @@ const useCatsDataManager = () => {
 
     const handleData = async () => {
       try {
-        let catsFetchData = await fetchCats(6, selectedCategory);
+        let catsFetchData = await fetchCats(6, "");
         dispatch({ type: "setCats", data: catsFetchData });
         updateExcluded(catsFetchData);
       } catch (e) {
@@ -136,13 +137,12 @@ const useCatsDataManager = () => {
     catsArray,
     breedsArray,
     excludedCats,
-    selectedCategory,
     error,
     hasError,
     fetchCats,
     addCatHandler,
+    deleteCatsHandler,
     findCatById,
-    updateSelectedCategory,
   };
 
   return retObject;
