@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import AddCat from "../components/AddCat";
+import AddFile from "../components/AddFile";
 import SearchCat from "../components/SearchCat";
 
 import "../css/Header.css";
@@ -16,6 +17,7 @@ export default function Header() {
         <h1>Reacats</h1>
         <div className="app-header-buttons">
           <AddCat />
+          <AddFile />
           <SearchCat />
         </div>
       </div>

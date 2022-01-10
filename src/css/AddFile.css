@@ -1,0 +1,12 @@
+.add-file-overlay {
+  padding: 10%;
+}
+
+.add-file-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: black;
+  background-color: white;
+  border-radius: 5px;
+}
