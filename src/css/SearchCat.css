@@ -43,3 +43,7 @@
   margin: 4px;
   cursor: pointer;
 }
+
+.cat-search-error {
+  color: black;
+}

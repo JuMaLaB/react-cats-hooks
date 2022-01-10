@@ -5,10 +5,12 @@ import catsReducer from "../utilities/catsReducer";
 
 const SearchCatForm = ({ limit, toggleForm }) => {
 
-  const { baseUrl, selectedCats, excludedCats, error, hasError, fetchCats, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
-  const [{ mapCategories }, dispatch] = useReducer(catsReducer, { mapCategories: [] });
+  const { baseUrl, selectedCats, excludedCats, fetchCats, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
+  const [{ error, hasError }, dispatch] = useReducer(catsReducer, { error: null, hasError: false });
 
   // console.log(`SearchCatForm => `);
+
+  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchCatsArray, setSearchCatsArray] = useState([]);
   const [isLoading, setIsloading] = useState(true);
@@ -33,7 +35,6 @@ const SearchCatForm = ({ limit, toggleForm }) => {
   const updateSelectedCategory = (option) => {
     const id = option.value ? option.value : option;
     setSelectedCategory(id);
-    dispatch({ type: "setSelectedCategory", id: id });
   };
 
   useEffect(() => {
@@ -49,20 +50,18 @@ const SearchCatForm = ({ limit, toggleForm }) => {
           }
           return response.json();
         },
-          (error) => {
-            console.log(error);
-          }
+          (error) => { console.log(error); }
         );
     };
 
     const handleCategories = async () => {
       try {
         let categoriesArray = await fetchCategories();
-        const newMapCategories = categoriesArray.map(item => {
+        const mapCategories = categoriesArray.map(item => {
           const option = { value: item.id, label: item.name };
           return option;
         });
-        dispatch({ type: "setCategories", data: newMapCategories });
+        setCategories(mapCategories);
       } catch (e) {
         dispatch({ type: "errorHandler", error: e });
       }
@@ -102,14 +101,14 @@ const SearchCatForm = ({ limit, toggleForm }) => {
   }, [selectedCategory]);
 
 
-  if (hasError === true) { return <div>Error: {error.message}</div>; }
+  if (hasError === true) { return <div className="cat-search-error">Error: {error.message}</div>; }
 
   return (
     <Profiler id="SearchCatForm" onRender={onRenderCallback}>
       <div className="cat-search-form">
         <div className="cat-search-form-header">
           <Select className="cat-search-form-select" placeholder="Category"
-            options={mapCategories}
+            options={categories}
             value={selectedCategory ? selectedCategory.id : ""}
             onChange={(option) => { updateSelectedCategory(option); }}
           />

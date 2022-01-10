@@ -5,8 +5,8 @@ import catsReducer from "../utilities/catsReducer";
 
 const BreedDetails = () => {
 
-  const { baseUrl, selectedCats, excludedCats, addCatsHandler, error, hasError, toggleSelectedHandler } = useContext(GlobalContext);
-  const [{ breedImagesArray }, dispatch] = useReducer(catsReducer, { breedImagesArray: [] });
+  const { baseUrl, selectedCats, excludedCats, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
+  const [{ breedImagesArray, error, hasError }, dispatch] = useReducer(catsReducer, { breedImagesArray: [], error: null, hasError: false });
 
   // console.log(`BreedDetails => `);
 
@@ -25,9 +25,7 @@ const BreedDetails = () => {
         }
         return response.json();
       },
-        (error) => {
-          console.log(error);
-        }
+        (error) => { console.log(error); }
       );
   };
 
