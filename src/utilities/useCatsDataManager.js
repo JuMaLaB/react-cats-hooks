@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import catsReducer from "./catsReducer";
 
 const useCatsDataManager = () => {
@@ -11,7 +11,6 @@ const useCatsDataManager = () => {
     {
       isLoading,
       catsArray,
-      breedsArray,
       selectedCats,
       deletedCats,
       excludedCats,
@@ -21,7 +20,6 @@ const useCatsDataManager = () => {
   ] = useReducer(catsReducer, {
     isLoading: true,
     catsArray: [],
-    breedsArray: [],
     selectedCats: [],
     deletedCats: [],
     excludedCats: [],
@@ -30,8 +28,8 @@ const useCatsDataManager = () => {
   });
 
   const addCatsHandler = (cats) => {
-    const newCatsArray = [...catsArray];
-    const newExcludedCats = [...excludedCats];
+    let newCatsArray = [...catsArray];
+    let newExcludedCats = [...excludedCats];
     cats.forEach((selectedCat) => {
       newCatsArray.push(selectedCat);
       newExcludedCats.push(selectedCat.id);
@@ -50,7 +48,7 @@ const useCatsDataManager = () => {
     if (i > -1) {
       return;
     }
-    const newSelectedCats = [...selectedCats];
+    let newSelectedCats = [...selectedCats];
     if (!newSelectedCats.includes(cat)) {
       newSelectedCats.push(cat);
     } else {
@@ -63,7 +61,7 @@ const useCatsDataManager = () => {
   };
 
   const deleteCatsHandler = (cats) => {
-    const newCatsArray = [...catsArray];
+    let newCatsArray = [...catsArray];
     cats.forEach((deletedCat) => {
       const index = catsArray.indexOf(deletedCat);
       newCatsArray.splice(index, 1);
@@ -75,7 +73,7 @@ const useCatsDataManager = () => {
   };
 
   const toggleDeletedHandler = (cat) => {
-    const newDeletedCats = [...deletedCats];
+    let newDeletedCats = [...deletedCats];
     if (!newDeletedCats.includes(cat)) {
       newDeletedCats.push(cat);
     } else {
@@ -87,67 +85,20 @@ const useCatsDataManager = () => {
     dispatch({ type: "setDeletedCat", data: newDeletedCats });
   };
 
-  const fetchCats = (limit, selectedCategory) => {
-    return fetch(`${baseUrl}/images/search?limit=${limit}&category_ids=${selectedCategory}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error('ERROR in response when fetchCats !');
-        }
-        return response.json();
-      },
-        (error) => { console.log(error); }
-      );
-  };
-
-  const fetchBreeds = () => {
-    return fetch(`${baseUrl}/breeds`)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error('ERROR in response when fetchBreeds !');
-        }
-        return response.json();
-      },
-        (error) => { console.log(error); }
-      );
-  };
-
-  useEffect(() => {
-
-    let mounted = true;
-    if (!mounted) return;
-
-    const handleBreedsData = async () => {
-      try {
-        let breedsFetchData = await fetchBreeds();
-        dispatch({ type: "setBreeds", data: breedsFetchData });
-      } catch (e) {
-        dispatch({ type: "errorHandler", error: e });
-      }
-    };
-
-    handleBreedsData();
-
-    return () => {
-      mounted = false;
-      console.log('cleanup useCatsDataManager breeds data');
-    };
-  }, []);
-
   const retObject = {
     baseUrl,
     isLoading,
     catsArray,
-    breedsArray,
     selectedCats,
     deletedCats,
     excludedCats,
     error,
     hasError,
-    fetchCats,
     addCatsHandler,
     toggleSelectedHandler,
     deleteCatsHandler,
     toggleDeletedHandler,
+    dispatch,
   };
 
   return retObject;

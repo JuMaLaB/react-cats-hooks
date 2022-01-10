@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useReducer, useState, Profiler } from "react";
+import React, { useContext, useEffect, useState, Profiler } from "react";
 import Select from "react-select";
 import { GlobalContext } from "../utilities/GlobalState";
-import catsReducer from "../utilities/catsReducer";
 
 const SearchCatForm = ({ limit, toggleForm }) => {
 
-  const { baseUrl, selectedCats, excludedCats, fetchCats, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
-  const [{ error, hasError }, dispatch] = useReducer(catsReducer, { error: null, hasError: false });
+  const { baseUrl, selectedCats, excludedCats, error, hasError, dispatch, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
 
   // console.log(`SearchCatForm => `);
 
@@ -37,6 +35,18 @@ const SearchCatForm = ({ limit, toggleForm }) => {
     setSelectedCategory(id);
   };
 
+  const fetchCats = (limit, selectedCategory) => {
+    return fetch(`${baseUrl}/images/search?limit=${limit}&category_ids=${selectedCategory}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('ERROR in response when fetchCats !');
+        }
+        return response.json();
+      },
+        (error) => { console.log(error); }
+      );
+  };
+
   useEffect(() => {
 
     let mounted = true;
@@ -56,7 +66,7 @@ const SearchCatForm = ({ limit, toggleForm }) => {
 
     const handleCategories = async () => {
       try {
-        let categoriesArray = await fetchCategories();
+        const categoriesArray = await fetchCategories();
         const mapCategories = categoriesArray.map(item => {
           const option = { value: item.id, label: item.name };
           return option;
@@ -84,7 +94,7 @@ const SearchCatForm = ({ limit, toggleForm }) => {
 
     const handleData = async () => {
       try {
-        let newSearchCatsArray = await fetchCats(limit, selectedCategory);
+        const newSearchCatsArray = await fetchCats(limit, selectedCategory);
         setSearchCatsArray(newSearchCatsArray);
         setIsloading(false);
       } catch (e) {

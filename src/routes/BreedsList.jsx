@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../utilities/GlobalState";
 
@@ -6,10 +6,48 @@ import "../css/BreedsList.css";
 
 const BreedsList = () => {
 
-  const { isLoading, breedsArray, error, hasError } = useContext(GlobalContext);
+  const { baseUrl, error, hasError, dispatch } = useContext(GlobalContext);
   let navigate = useNavigate();
 
   // console.log(`BreedsList => `);
+
+  const [breedsArray, setBreedsArray] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+
+  const fetchBreeds = () => {
+    return fetch(`${baseUrl}/breeds`)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('ERROR in response when fetchBreeds !');
+        }
+        return response.json();
+      },
+        (error) => { console.log(error); }
+      );
+  };
+
+  useEffect(() => {
+
+    let mounted = true;
+    if (!mounted) return;
+
+    const handleBreedsData = async () => {
+      try {
+        const breedsFetchData = await fetchBreeds();
+        setBreedsArray(breedsFetchData);
+        setIsloading(false);
+      } catch (e) {
+        dispatch({ type: "errorHandler", error: e });
+      }
+    };
+
+    handleBreedsData();
+
+    return () => {
+      mounted = false;
+      console.log('cleanup useCatsDataManager breeds data');
+    };
+  }, []);
 
   if (hasError === true) { return <div>Error: {error.message}</div>; }
 

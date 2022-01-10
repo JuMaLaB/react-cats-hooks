@@ -31,7 +31,7 @@ const AddCatForm = ({ setInputDisplayed }) => {
     if (e.key !== "Enter") return;
     if (!excludedCats.includes(catId)) {
       try {
-        let cat = await findCatById(catId);
+        const cat = await findCatById(catId);
         addCatsHandler([cat]);
         setInputDisplayed(false);
       } catch (e) {
@@ -44,10 +44,10 @@ const AddCatForm = ({ setInputDisplayed }) => {
   };
 
   useEffect(() => {
-    let cancel = false;
-    if (cancel) return;
+    let mounted = true;
+    if (!mounted) return;
     return () => {
-      cancel = true;
+      mounted = false;
       console.log('cleanup AddCatForm');
     };
   }, []);

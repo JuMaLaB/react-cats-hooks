@@ -1,18 +1,17 @@
-import React, { useContext, useState, useReducer } from 'react';
+import React, { useContext, useState } from 'react';
 import { useLocation } from "react-router-dom";
 import { GlobalContext } from "../utilities/GlobalState";
-import catsReducer from "../utilities/catsReducer";
 
 const BreedDetails = () => {
 
-  const { baseUrl, selectedCats, excludedCats, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
-  const [{ breedImagesArray, error, hasError }, dispatch] = useReducer(catsReducer, { breedImagesArray: [], error: null, hasError: false });
+  const { baseUrl, selectedCats, excludedCats, error, hasError, dispatch, addCatsHandler, toggleSelectedHandler } = useContext(GlobalContext);
 
   // console.log(`BreedDetails => `);
 
   const location = useLocation();
   const breed = location.state;
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsloading] = useState(true);
+  const [breedImagesArray, setBreedImagesArray] = useState([]);
 
   const maxWidth = 500;
   const calcMaxHeight = (breed.image?.height / breed.image?.width) * maxWidth + "px";
@@ -32,8 +31,8 @@ const BreedDetails = () => {
   const handleBreedImages = async (breedId) => {
     try {
       setIsloading(true);
-      let breedImagesArray = await fetchBreedImages(breedId);
-      dispatch({ type: "setBreedImages", data: breedImagesArray });
+      const newBreedImagesArray = await fetchBreedImages(breedId);
+      setBreedImagesArray(newBreedImagesArray);
       setIsloading(false);
     } catch (e) {
       dispatch({ type: "errorHandler", error: e });

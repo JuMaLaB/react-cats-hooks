@@ -6,14 +6,10 @@ import "../css/CatsList.css";
 
 const CatsList = () => {
 
-  const { isLoading, catsArray, error, hasError, toggleDeletedHandler, deletedCats, deleteCatsHandler } = useContext(GlobalContext);
+  const { catsArray, toggleDeletedHandler, deletedCats, deleteCatsHandler } = useContext(GlobalContext);
   let navigate = useNavigate();
 
   // console.log(`CatsList => `);
-
-  if (hasError === true) { return <div>Error: {error.message}</div>; }
-
-  if (isLoading) { return <div>Loading...</div>; }
 
   return (
     <div className="app-cats-list container-fluid text-center custom-scroll">
