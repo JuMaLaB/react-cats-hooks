@@ -14,22 +14,24 @@ const BreedsList = () => {
   const [breedsArray, setBreedsArray] = useState([]);
   const [isLoading, setIsloading] = useState(true);
 
-  const fetchBreeds = () => {
-    return fetch(`${baseUrl}/breeds`)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error('ERROR in response when fetchBreeds !');
-        }
-        return response.json();
-      },
-        (error) => { console.log(error); }
-      );
-  };
+
 
   useEffect(() => {
 
     let mounted = true;
     if (!mounted) return;
+
+    const fetchBreeds = () => {
+      return fetch(`${baseUrl}/breeds`)
+        .then((response) => {
+          if (!response.ok) {
+            throw Error('ERROR in response when fetchBreeds !');
+          }
+          return response.json();
+        },
+          (error) => { console.log(error); }
+        );
+    };
 
     const handleBreedsData = async () => {
       try {
@@ -47,7 +49,7 @@ const BreedsList = () => {
       mounted = false;
       console.log('cleanup useCatsDataManager breeds data');
     };
-  }, []);
+  }, [baseUrl, dispatch]);
 
   if (hasError === true) { return <div>Error: {error.message}</div>; }
 

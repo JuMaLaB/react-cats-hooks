@@ -10,7 +10,7 @@ const BreedDetails = () => {
 
   const location = useLocation();
   const breed = location.state;
-  const [isLoading, setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(false);
   const [breedImagesArray, setBreedImagesArray] = useState([]);
 
   const maxWidth = 500;

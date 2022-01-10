@@ -35,18 +35,6 @@ const SearchCatForm = ({ limit, toggleForm }) => {
     setSelectedCategory(id);
   };
 
-  const fetchCats = (limit, selectedCategory) => {
-    return fetch(`${baseUrl}/images/search?limit=${limit}&category_ids=${selectedCategory}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error('ERROR in response when fetchCats !');
-        }
-        return response.json();
-      },
-        (error) => { console.log(error); }
-      );
-  };
-
   useEffect(() => {
 
     let mounted = true;
@@ -84,13 +72,25 @@ const SearchCatForm = ({ limit, toggleForm }) => {
       mounted = false;
       console.log('cleanup SearchCatForm categories');
     };
-  }, []);
+  }, [baseUrl, dispatch]);
 
   useEffect(() => {
 
     let mounted = true;
     if (!mounted) return;
     setIsloading(true);
+
+    const fetchCats = (limit, selectedCategory) => {
+      return fetch(`${baseUrl}/images/search?limit=${limit}&category_ids=${selectedCategory}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw Error('ERROR in response when fetchCats !');
+          }
+          return response.json();
+        },
+          (error) => { console.log(error); }
+        );
+    };
 
     const handleData = async () => {
       try {
@@ -108,7 +108,7 @@ const SearchCatForm = ({ limit, toggleForm }) => {
       mounted = false;
       console.log('cleanup SearchCatForm data');
     };
-  }, [selectedCategory]);
+  }, [limit, baseUrl, dispatch, selectedCategory]);
 
 
   if (hasError === true) { return <div className="cat-search-error">Error: {error.message}</div>; }
