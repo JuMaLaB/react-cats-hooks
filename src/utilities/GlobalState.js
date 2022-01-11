@@ -10,7 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const {
     baseUrl,
     isLoading,
-    catsArray,
+    savedCats,
     selectedCats,
     deletedCats,
     excludedCats,
@@ -26,7 +26,7 @@ export const GlobalProvider = ({ children }) => {
   const provider = {
     baseUrl,
     isLoading,
-    catsArray,
+    savedCats,
     selectedCats,
     deletedCats,
     excludedCats,

@@ -4,9 +4,9 @@ const catsReducer = (state, action) => {
 
   switch (action.type) {
     case "addCat":
-      return { ...state, catsArray: action.data };
+      return { ...state, savedCats: action.data };
     case "deleteCat":
-      return { ...state, catsArray: action.data };
+      return { ...state, savedCats: action.data };
     case 'setSelectedCat':
       return { ...state, selectedCats: action.data };
     case 'setDeletedCat':

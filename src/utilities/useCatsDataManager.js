@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import catsReducer from "./catsReducer";
 
 const useCatsDataManager = () => {
@@ -6,11 +6,15 @@ const useCatsDataManager = () => {
   // console.log(`useCatsDataManager => `);
 
   const baseUrl = "https://api.thecatapi.com/v1";
+  const initSavedCat = JSON.parse(localStorage.getItem('catsList')) ? JSON.parse(localStorage.getItem('catsList')) : [];
+  const initExcludedCat = initSavedCat.map((cat) => {
+    return cat.id;
+  });
 
   const [
     {
       isLoading,
-      catsArray,
+      savedCats,
       selectedCats,
       deletedCats,
       excludedCats,
@@ -19,16 +23,16 @@ const useCatsDataManager = () => {
     }, dispatch
   ] = useReducer(catsReducer, {
     isLoading: true,
-    catsArray: [],
+    savedCats: initSavedCat,
     selectedCats: [],
     deletedCats: [],
-    excludedCats: [],
+    excludedCats: initExcludedCat,
     error: null,
     hasError: false,
   });
 
   const addCatsHandler = (cats) => {
-    let newCatsArray = [...catsArray];
+    let newCatsArray = [...savedCats];
     let newExcludedCats = [...excludedCats];
     cats.forEach((selectedCat) => {
       newCatsArray.push(selectedCat);
@@ -61,9 +65,9 @@ const useCatsDataManager = () => {
   };
 
   const deleteCatsHandler = (cats) => {
-    let newCatsArray = [...catsArray];
+    let newCatsArray = [...savedCats];
     cats.forEach((deletedCat) => {
-      const index = catsArray.indexOf(deletedCat);
+      const index = savedCats.indexOf(deletedCat);
       newCatsArray.splice(index, 1);
       const indexExcluded = excludedCats.indexOf(deletedCat.id);
       excludedCats.splice(indexExcluded, 1);
@@ -85,10 +89,14 @@ const useCatsDataManager = () => {
     dispatch({ type: "setDeletedCat", data: newDeletedCats });
   };
 
+  useEffect(() => {
+    localStorage.setItem('catsList', JSON.stringify(savedCats));
+  }, [savedCats]);
+
   const retObject = {
     baseUrl,
     isLoading,
-    catsArray,
+    savedCats,
     selectedCats,
     deletedCats,
     excludedCats,

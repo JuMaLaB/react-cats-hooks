@@ -5,7 +5,7 @@ import "../css/Aside.css";
 
 export default function Aside() {
 
-  const { catsArray, toggleDeletedHandler, deletedCats, deleteCatsHandler } = useContext(GlobalContext);
+  const { savedCats, toggleDeletedHandler, deletedCats, deleteCatsHandler } = useContext(GlobalContext);
 
   // console.log(`Aside => `);
 
@@ -13,7 +13,7 @@ export default function Aside() {
     <aside className="app-aside col-md-2">
       <div className="aside-cats-list custom-scroll">
         <h3>My album</h3>
-        {catsArray.map((cat) => (
+        {savedCats.map((cat) => (
           <div key={cat.id} className="aside-cats-list-card p-2">
             {!deletedCats.includes(cat) ? <span className="custom-close" onClick={() => deleteCatsHandler([cat])}></span> : ""}
             <div className={`col-12 border rounded p-2 ${deletedCats.includes(cat) ? "cat-deleted" : ""}`}>

@@ -6,7 +6,7 @@ import "../css/CatsList.css";
 
 const CatsList = () => {
 
-  const { catsArray, toggleDeletedHandler, deletedCats, deleteCatsHandler } = useContext(GlobalContext);
+  const { savedCats, toggleDeletedHandler, deletedCats, deleteCatsHandler } = useContext(GlobalContext);
   let navigate = useNavigate();
 
   // console.log(`CatsList => `);
@@ -21,7 +21,7 @@ const CatsList = () => {
         </button>
       )}
       <div className="cats-list row">
-        {catsArray.map((cat) => (
+        {savedCats.map((cat) => (
           <div key={cat.id} className="cats-list-card col-lg-2 col-md-4 col-6 p-2">
             {!deletedCats.includes(cat) ? <span className="custom-close" onClick={() => deleteCatsHandler([cat])}></span> : ""}
             <div className={`col-12 border rounded text-center p-2 ${deletedCats.includes(cat) ? "cat-deleted" : ""}`}>
